@@ -62,14 +62,14 @@ const SummaryCard = ({ summary, originalWordCount }) => {
           <div className="flex gap-3 w-full sm:w-auto">
             <button
               onClick={handleExport}
-              className="flex-1 sm:flex-none text-xs md:text-sm px-4 py-2 brutal-border brutal-shadow-sm bg-white hover:bg-gray-50 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-black flex items-center justify-center gap-2"
+              className="flex-1 sm:flex-none text-xs md:text-sm px-4 py-2 brutal-border brutal-shadow-sm bg-white text-black dark:bg-slate-700 dark:text-white hover:bg-gray-50 dark:hover:bg-slate-600 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-black flex items-center justify-center gap-2"
               aria-label="Export Summary"
             >
               <FiDownload /> EXPORT TXT
             </button>
             <button
               onClick={handleCopy}
-              className={`flex-1 sm:flex-none text-xs md:text-sm px-4 py-2 brutal-border brutal-shadow-sm transition-all font-black flex items-center justify-center gap-2 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${isCopied ? 'bg-success text-white' : 'bg-white hover:bg-gray-50'}`}
+              className={`flex-1 sm:flex-none text-xs md:text-sm px-4 py-2 brutal-border brutal-shadow-sm transition-all font-black flex items-center justify-center gap-2 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${isCopied ? 'bg-success text-white' : 'bg-white text-black dark:bg-slate-700 dark:text-white hover:bg-gray-50 dark:hover:bg-slate-600'}`}
               aria-label="Copy Summary"
             >
               {isCopied ? (
