@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import Hero from '../components/Hero';
 import TextAreaCard from '../components/TextAreaCard';
 import SummaryCard from '../components/SummaryCard';
+import HistorySection from '../components/HistorySection';
 import { summarizeText } from '../services/api';
 
 const Home = () => {
   const [text, setText] = useState('');
   const [summary, setSummary] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [summaryLength, setSummaryLength] = useState('medium');
+  const [history, setHistory] = useState(() => {
+    const saved = localStorage.getItem('shortify_history');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const originalWordCount = text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0;
+
+  useEffect(() => {
+    localStorage.setItem('shortify_history', JSON.stringify(history));
+  }, [history]);
 
   // Common toast style
   const toastStyle = {
@@ -31,9 +43,22 @@ const Home = () => {
     const loadingToast = toast.loading('Generating summary...', { style: toastStyle });
 
     try {
-      const data = await summarizeText(text);
+      const data = await summarizeText(text, summaryLength);
       if (data && data.success) {
         setSummary(data.summary);
+
+        // Add to history
+        const newHistoryItem = {
+          id: Date.now(),
+          text: text,
+          summary: data.summary,
+          lengthMode: summaryLength,
+          date: new Date().toLocaleString(),
+          wordCount: data.summary.trim().split(/\s+/).filter(Boolean).length
+        };
+
+        setHistory(prev => [newHistoryItem, ...prev].slice(0, 5));
+
         toast.success('Summary generated successfully!', {
           id: loadingToast,
           style: toastStyle
@@ -61,24 +86,56 @@ const Home = () => {
     });
   };
 
+  const handleDeleteHistory = (id) => {
+    setHistory(prev => prev.filter(item => item.id !== id));
+    toast.success('Item deleted from history.', { style: toastStyle });
+  };
+
+  const handleClearAllHistory = () => {
+    if (window.confirm('Are you sure you want to clear all history?')) {
+      setHistory([]);
+      toast.success('All history cleared.', { style: toastStyle });
+    }
+  };
+
+  const handleSelectHistory = (item) => {
+    setText(item.text);
+    setSummary(item.summary);
+    setSummaryLength(item.lengthMode);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    toast.success('History item loaded!', { style: toastStyle });
+  };
+
   return (
-    <div className="max-w-4xl mx-auto px-6">
-      <Toaster
-        position="bottom-center"
-        reverseOrder={false}
-        containerStyle={{
-          bottom: 40,
-        }}
-      />
-      <Hero />
-      <TextAreaCard
-        text={text}
-        setText={setText}
-        onSummarize={handleSummarize}
-        onClear={handleClear}
-        isLoading={isLoading}
-      />
-      <SummaryCard summary={summary} />
+    <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="lg:col-span-2">
+        <Toaster
+          position="bottom-center"
+          reverseOrder={false}
+          containerStyle={{
+            bottom: 40,
+          }}
+        />
+        <Hero />
+        <TextAreaCard
+          text={text}
+          setText={setText}
+          onSummarize={handleSummarize}
+          onClear={handleClear}
+          isLoading={isLoading}
+          summaryLength={summaryLength}
+          setSummaryLength={setSummaryLength}
+        />
+        <SummaryCard summary={summary} originalWordCount={originalWordCount} />
+      </div>
+      <div className="lg:pt-20">
+        <HistorySection
+          history={history}
+          onDelete={handleDeleteHistory}
+          onClearAll={handleClearAllHistory}
+          onSelect={handleSelectHistory}
+        />
+      </div>
     </div>
   );
 };
