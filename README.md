@@ -75,9 +75,28 @@ shortify-ai-summarizer/
 
 ---
 
-## 🔮 Future Features (Phase 2+)
+## 🤖 Phase 4: Gemini AI Integration
 
-- [ ] AI Summarization integration (Gemini/OpenAI)
+This phase replaces placeholder summaries with real AI-generated content using Google's Gemini 1.5 Flash model.
+
+### Gemini Setup
+
+1.  **Get API Key:** Create a free API key from [Google AI Studio](https://aistudio.google.com/).
+2.  **Environment Configuration:**
+    -   Create/Update `backend/.env`.
+    -   Add your key: `GEMINI_API_KEY=your_key_here`.
+3.  **Restart Backend:** The server will now use Gemini for all summarization requests.
+
+### Troubleshooting
+
+-   **Invalid API Key:** Ensure your key is correctly copied into the `.env` file and that the backend was restarted.
+-   **Quota Exceeded:** Free tier keys have rate limits. If you hit a limit, wait a minute and try again.
+-   **Input too short/long:** Ensure your text is between 20 and 15,000 characters.
+
+---
+
+## 🔮 Future Features (Phase 5+)
+
 - [ ] MongoDB for saving summaries
 - [ ] User Authentication
 - [ ] File upload support (PDF, TXT)
