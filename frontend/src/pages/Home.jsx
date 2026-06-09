@@ -10,6 +10,7 @@ const Home = () => {
   const [text, setText] = useState('');
   const [summary, setSummary] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('Analyzing content...');
   const [summaryLength, setSummaryLength] = useState('medium');
   const [history, setHistory] = useState(() => {
     const saved = localStorage.getItem('shortify_history');
@@ -21,6 +22,28 @@ const Home = () => {
   useEffect(() => {
     localStorage.setItem('shortify_history', JSON.stringify(history));
   }, [history]);
+
+  // Handle rotating loading messages
+  useEffect(() => {
+    let interval;
+    if (isLoading) {
+      const messages = [
+        'Analyzing content...',
+        'Extracting key information...',
+        'Generating summary...',
+        'Finalizing summary...'
+      ];
+      let currentIndex = 0;
+
+      interval = setInterval(() => {
+        currentIndex = (currentIndex + 1) % messages.length;
+        setLoadingMessage(messages[currentIndex]);
+      }, 2500);
+    } else {
+      setLoadingMessage('Analyzing content...');
+    }
+    return () => clearInterval(interval);
+  }, [isLoading]);
 
   // Common toast style
   const toastStyle = {
@@ -39,8 +62,13 @@ const Home = () => {
       return;
     }
 
+    if (text.length < 20) {
+      toast.error('Please provide more content for summarization (min 20 chars).', { style: toastStyle });
+      return;
+    }
+
     setIsLoading(true);
-    const loadingToast = toast.loading('Generating summary...', { style: toastStyle });
+    const loadingToast = toast.loading(loadingMessage, { id: 'loading-summary', style: toastStyle });
 
     try {
       const data = await summarizeText(text, summaryLength);
@@ -64,11 +92,12 @@ const Home = () => {
           style: toastStyle
         });
       } else {
-        throw new Error('Invalid response');
+        throw new Error(data.message || 'Invalid response');
       }
     } catch (error) {
       console.error('Failed to summarize:', error);
-      toast.error('Failed to generate summary. Please check your connection.', {
+      const errorMessage = error.response?.data?.message || error.message || 'Failed to generate summary.';
+      toast.error(errorMessage, {
         id: loadingToast,
         style: toastStyle
       });
@@ -76,6 +105,13 @@ const Home = () => {
       setIsLoading(false);
     }
   };
+
+  // Update loading toast message when loadingMessage changes
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading(loadingMessage, { id: 'loading-summary', style: toastStyle });
+    }
+  }, [loadingMessage, isLoading]);
 
   const handleClear = () => {
     setText('');
