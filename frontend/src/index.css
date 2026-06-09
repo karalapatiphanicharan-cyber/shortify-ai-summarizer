@@ -22,11 +22,31 @@
   .brutal-shadow-sm {
     box-shadow: 4px 4px 0px black;
   }
+  .brutal-shadow-lg {
+    box-shadow: 12px 12px 0px black;
+  }
   .brutal-btn {
-    @apply brutal-border brutal-shadow px-6 py-3 rounded-2xl transition-all duration-150 active:translate-x-1 active:translate-y-1 active:shadow-none hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[10px_10px_0px_black] disabled:opacity-50 disabled:translate-x-0 disabled:translate-y-0 disabled:shadow-none;
+    @apply brutal-border brutal-shadow px-6 py-3 rounded-2xl transition-all duration-200
+           active:translate-x-[4px] active:translate-y-[4px] active:shadow-[4px_4px_0px_black]
+           hover:-translate-x-1 hover:-translate-y-1 hover:brutal-shadow-lg
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none
+           flex items-center justify-center gap-2;
+  }
+  .brutal-btn-primary {
+    @apply brutal-btn bg-[#3B82F6] text-white;
+  }
+  .brutal-btn-secondary {
+    @apply brutal-btn bg-[#FACC15] text-black;
+  }
+  .brutal-btn-white {
+    @apply brutal-btn bg-white text-black;
   }
   .brutal-card {
-    @apply brutal-border brutal-shadow rounded-2xl bg-white p-6 transition-all duration-150;
+    @apply brutal-border brutal-shadow rounded-2xl bg-white p-6 transition-all duration-200;
+  }
+  .brutal-input {
+    @apply w-full brutal-border p-4 rounded-xl focus:outline-none focus:ring-4 focus:ring-[#3B82F6]/30
+           resize-none font-bold placeholder-gray-400 text-base md:text-lg transition-all duration-200;
   }
   .brutal-badge {
     @apply brutal-border px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest;
