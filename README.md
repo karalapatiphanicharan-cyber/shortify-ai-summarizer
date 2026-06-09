@@ -2,6 +2,12 @@
 
 Shortify AI Summarizer is a modern, portfolio-worthy full-stack application designed to summarize long text content instantly. It features a unique **Neo-Brutalism** design system.
 
+## 🚀 Live Demo
+
+🌐 Live Website: https://shortify-ai-summarizer.vercel.app
+
+🤖 Backend API: https://shortify-backend-9961.onrender.com
+
 ## 🚀 Phase 1: Foundation
 
 This phase focuses on the core architecture, responsive layout, and API structure.
