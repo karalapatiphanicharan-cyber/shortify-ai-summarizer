@@ -1,7 +1,14 @@
-import React from 'react';
-import { FiTrash2, FiClock, FiType, FiChevronRight } from 'react-icons/fi';
+import React, { useState } from 'react';
+import { FiTrash2, FiClock, FiType, FiChevronDown, FiChevronUp, FiExternalLink } from 'react-icons/fi';
 
 const HistoryCard = ({ item, onDelete, onSelect }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const shouldTruncate = item.summary.length > 150;
+
+  const displaySummary = isExpanded || !shouldTruncate
+    ? item.summary
+    : item.summary.substring(0, 140) + '...';
+
   return (
     <div className="bg-white dark:bg-slate-800 brutal-border brutal-shadow-sm p-4 rounded-xl mb-4 hover:brutal-shadow transition-all group">
       <div className="flex justify-between items-start mb-2">
@@ -21,16 +28,28 @@ const HistoryCard = ({ item, onDelete, onSelect }) => {
         <div className="flex items-center gap-1 bg-secondary/20 dark:bg-secondary/40 text-[10px] font-black uppercase px-2 py-0.5 rounded-full inline-flex brutal-border-sm mb-2">
           <FiType size={10} /> {item.lengthMode}
         </div>
-        <p className="text-sm font-bold dark:text-white line-clamp-2 leading-relaxed">
-          {item.summary}
+        <p className={`text-sm font-bold dark:text-white leading-relaxed transition-all duration-300 ${isExpanded ? 'mb-2' : ''}`}>
+          {displaySummary}
         </p>
+
+        {shouldTruncate && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsExpanded(!isExpanded);
+            }}
+            className="text-[10px] font-black uppercase text-primary hover:underline flex items-center gap-1 mt-1"
+          >
+            {isExpanded ? <><FiChevronUp /> Show Less</> : <><FiChevronDown /> Read More</>}
+          </button>
+        )}
       </div>
 
       <button
         onClick={() => onSelect(item)}
-        className="w-full flex items-center justify-between text-[10px] font-black uppercase py-2 border-t border-dashed border-gray-200 dark:border-gray-600 group-hover:text-primary transition-colors"
+        className="w-full flex items-center justify-between text-[10px] font-black uppercase pt-3 mt-2 border-t-2 border-black dark:border-gray-600 group-hover:bg-primary group-hover:text-white px-2 py-1 transition-all rounded-md"
       >
-        View Details <FiChevronRight />
+        Load into editor <FiExternalLink />
       </button>
     </div>
   );
@@ -57,11 +76,14 @@ const HistorySection = ({ history, onDelete, onClearAll, onSelect }) => {
       </div>
 
       {history.length === 0 ? (
-        <div className="brutal-card bg-gray-50 dark:bg-slate-900 border-dashed border-4 flex flex-col items-center justify-center py-12 text-center shadow-none">
-          <div className="bg-gray-200 dark:bg-slate-800 p-4 rounded-full mb-4">
-            <FiClock size={32} className="text-gray-400" />
+        <div className="brutal-card bg-gray-50 dark:bg-slate-900/50 border-dashed border-4 flex flex-col items-center justify-center py-16 text-center shadow-none">
+          <div className="bg-white dark:bg-slate-800 brutal-border p-5 rounded-2xl mb-6 brutal-shadow-sm">
+            <FiClock size={40} className="text-gray-300 dark:text-gray-600" />
           </div>
-          <p className="text-gray-500 dark:text-gray-400 font-bold">No summaries generated yet.</p>
+          <h3 className="text-lg font-black dark:text-white mb-2 uppercase">Your history is empty</h3>
+          <p className="text-gray-500 dark:text-gray-400 font-bold text-sm max-w-[200px]">
+            Summarize some text to see your recent activity here.
+          </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">

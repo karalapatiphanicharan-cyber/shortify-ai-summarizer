@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FiCopy, FiCheck, FiDownload, FiTrendingDown } from 'react-icons/fi';
+import { FiCopy, FiCheck, FiDownload, FiTrendingDown, FiFileText } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
 const SummaryCard = ({ summary, originalWordCount }) => {
@@ -86,25 +86,35 @@ const SummaryCard = ({ summary, originalWordCount }) => {
         )}
       </div>
 
-      <div className="bg-white dark:bg-slate-700 brutal-border p-6 rounded-xl min-h-[200px] transition-all duration-300">
+      <div className="bg-white dark:bg-slate-700 brutal-border p-8 rounded-xl min-h-[250px] transition-all duration-300 shadow-inner">
         {summary ? (
-          <p className="text-lg leading-relaxed font-bold dark:text-white">{summary}</p>
+          <p className="text-lg md:text-xl leading-[1.8] font-bold dark:text-white whitespace-pre-wrap">{summary}</p>
         ) : (
-          <div className="flex items-center justify-center h-full min-h-[150px]">
-            <p className="text-gray-400 dark:text-gray-400 italic font-bold">Your summarized content will appear here.</p>
+          <div className="flex flex-col items-center justify-center h-full min-h-[200px] text-center">
+            <div className="bg-gray-50 dark:bg-slate-800 p-4 rounded-2xl brutal-border mb-4 opacity-50">
+              <FiFileText size={48} className="text-gray-300 dark:text-gray-600" />
+            </div>
+            <h3 className="text-lg font-black dark:text-white mb-1 uppercase opacity-50">No Summary Yet</h3>
+            <p className="text-gray-400 dark:text-gray-500 font-bold italic">
+              Your summarized content will appear here.
+            </p>
           </div>
         )}
       </div>
 
       {summary && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+          <div className="bg-white dark:bg-slate-800 brutal-border brutal-shadow-sm px-4 py-3 rounded-lg">
+            <p className="text-[10px] text-gray-500 uppercase font-black mb-1">Original Words</p>
+            <p className="text-xl font-black dark:text-white">{originalWordCount}</p>
+          </div>
+          <div className="bg-white dark:bg-slate-800 brutal-border brutal-shadow-sm px-4 py-3 rounded-lg">
+            <p className="text-[10px] text-gray-500 uppercase font-black mb-1">Summary Words</p>
+            <p className="text-xl font-black dark:text-white">{wordCount}</p>
+          </div>
           <div className="bg-white dark:bg-slate-800 brutal-border brutal-shadow-sm px-4 py-3 rounded-lg">
             <p className="text-[10px] text-gray-500 uppercase font-black mb-1">Characters</p>
             <p className="text-xl font-black dark:text-white">{charCount}</p>
-          </div>
-          <div className="bg-white dark:bg-slate-800 brutal-border brutal-shadow-sm px-4 py-3 rounded-lg">
-            <p className="text-[10px] text-gray-500 uppercase font-black mb-1">Words</p>
-            <p className="text-xl font-black dark:text-white">{wordCount}</p>
           </div>
           <div className="bg-primary brutal-border brutal-shadow-sm px-4 py-3 rounded-lg text-white flex justify-between items-center">
             <div>

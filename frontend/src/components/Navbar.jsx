@@ -21,8 +21,9 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
 
         <button
           onClick={toggleDarkMode}
-          className="p-2 brutal-border brutal-shadow-sm bg-white dark:bg-slate-700 dark:text-white active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
-          aria-label="Toggle Dark Mode"
+          className="p-2 brutal-border brutal-shadow-sm bg-white dark:bg-slate-700 dark:text-white active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all focus:outline-none focus:ring-4 focus:ring-primary/40"
+          aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+          title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
         >
           {darkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
         </button>

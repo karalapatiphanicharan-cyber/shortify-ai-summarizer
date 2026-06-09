@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiRefreshCw, FiTrash2, FiZap } from 'react-icons/fi';
+import { FiRefreshCw, FiTrash2, FiZap, FiLoader } from 'react-icons/fi';
 
 const TextAreaCard = ({ text, setText, onSummarize, onClear, isLoading, summaryLength, setSummaryLength }) => {
   const wordCount = text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0;
@@ -80,13 +80,14 @@ const TextAreaCard = ({ text, setText, onSummarize, onClear, isLoading, summaryL
             <button
               onClick={onSummarize}
               disabled={isLoading}
-              className="brutal-btn-primary flex-1 sm:flex-none text-sm md:text-base"
+              className={`brutal-btn-primary flex-1 sm:flex-none text-sm md:text-base relative overflow-hidden ${isLoading ? 'opacity-80 cursor-wait' : ''}`}
               aria-label="Generate Summary"
             >
               {isLoading ? (
-                <>
-                  <FiRefreshCw className="animate-spin" /> GENERATING...
-                </>
+                <span className="flex items-center gap-3">
+                  <FiLoader className="animate-spin text-lg" />
+                  GENERATING...
+                </span>
               ) : (
                 <>
                   GENERATE SUMMARY

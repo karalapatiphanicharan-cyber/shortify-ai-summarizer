@@ -46,10 +46,26 @@ exports.summarizeText = async (req, res) => {
   } catch (error) {
     console.error("Controller Error:", error.message);
 
-    // Default to 500 but preserve message if it's a known error from service
-    res.status(500).json({
+    // Map specific technical errors to user-friendly messages
+    let status = 500;
+    let message = "An unexpected error occurred during summarization. Please try again later.";
+
+    if (error.message.includes("API_KEY_INVALID")) {
+      status = 401;
+      message = "Service configuration error. Please contact support.";
+    } else if (error.message.includes("quota")) {
+      status = 429;
+      message = "We are receiving too many requests. Please try again in a few minutes.";
+    } else if (error.message.includes("safety")) {
+      status = 400;
+      message = "This content cannot be summarized due to safety restrictions.";
+    } else if (error.message.includes("Failed to generate summary")) {
+      message = error.message;
+    }
+
+    res.status(status).json({
       success: false,
-      message: error.message || "An unexpected error occurred during summarization"
+      message: message
     });
   }
 };

@@ -11,9 +11,4 @@ app.use(express.json());
 // Routes
 app.use('/api', summaryRoutes);
 
-// Root route
-app.get('/', (req, res) => {
-  res.json({ message: 'Shortify API is running' });
-});
-
 module.exports = app;
