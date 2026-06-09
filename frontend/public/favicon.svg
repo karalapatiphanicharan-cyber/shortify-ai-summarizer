@@ -1,4 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" fill="#3B82F6" stroke="black" stroke-width="8"/>
-  <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-family="Arial" font-weight="900" font-size="70" fill="white" stroke="black" stroke-width="2">S</text>
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with Shadow -->
+  <rect x="4" y="4" width="56" height="56" rx="12" fill="black" />
+  <rect x="0" y="0" width="56" height="56" rx="12" fill="#FACC15" stroke="black" stroke-width="4"/>
+
+  <!-- "S" Character -->
+  <path d="M20 40C20 40 22 44 28 44C34 44 36 41 36 38C36 33 20 35 20 27C20 22 24 18 30 18C36 18 38 22 38 22"
+        stroke="black" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

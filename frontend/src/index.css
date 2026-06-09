@@ -4,7 +4,11 @@
 
 @layer base {
   body {
-    @apply bg-[#F8FAFC] text-black font-bold antialiased;
+    @apply bg-[#F8FAFC] text-black font-bold antialiased transition-colors duration-300;
+  }
+
+  body.dark {
+    @apply bg-[#0F172A] text-white;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -42,11 +46,12 @@
     @apply brutal-btn bg-white text-black;
   }
   .brutal-card {
-    @apply brutal-border brutal-shadow rounded-2xl bg-white p-6 transition-all duration-200;
+    @apply brutal-border brutal-shadow rounded-2xl bg-white dark:bg-slate-800 p-6 transition-all duration-200;
   }
   .brutal-input {
     @apply w-full brutal-border p-4 rounded-xl focus:outline-none focus:ring-4 focus:ring-[#3B82F6]/30
-           resize-none font-bold placeholder-gray-400 text-base md:text-lg transition-all duration-200;
+           resize-none font-bold placeholder-gray-400 text-base md:text-lg transition-all duration-200
+           dark:bg-slate-700 dark:text-white dark:placeholder-slate-400;
   }
   .brutal-badge {
     @apply brutal-border px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest;
@@ -68,4 +73,52 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #3B82F6;
+}
+
+/* Tailwind animation extensions */
+@layer utilities {
+  .animate-in {
+    animation-duration: 500ms;
+    animation-fill-mode: both;
+  }
+  .fade-in {
+    animation-name: fadeIn;
+  }
+  .slide-in-from-bottom-4 {
+    animation-name: slideInFromBottom;
+  }
+  .slide-in-from-left-4 {
+    animation-name: slideInFromLeft;
+  }
+  .slide-in-from-right-4 {
+    animation-name: slideInFromRight;
+  }
+  .zoom-in {
+    animation-name: zoomIn;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInFromBottom {
+  from { transform: translateY(1rem); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideInFromLeft {
+  from { transform: translateX(-1rem); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInFromRight {
+  from { transform: translateX(1rem); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }

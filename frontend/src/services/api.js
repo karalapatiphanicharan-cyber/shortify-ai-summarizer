@@ -9,8 +9,8 @@ export const checkHealth = async () => {
   return response.data;
 };
 
-export const summarizeText = async (text) => {
-  const response = await api.post('/summarize', { text });
+export const summarizeText = async (text, length = 'medium') => {
+  const response = await api.post('/summarize', { text, length });
   return response.data;
 };
 
